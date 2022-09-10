@@ -8,7 +8,7 @@ export function createStore(reducer) {
     const roots = new Map();
 
     function render() {
-        for(const [root, component] of root) {
+        for(const [root, component] of roots) {
             const output = component();
             root.innerHTML = output;
         }
@@ -20,9 +20,8 @@ export function createStore(reducer) {
             render();
         },
         connect(selector = state => state ) {
-            return component => (props, ...args) => {
-                component(Object.assign({}, props, selector(state), ...args))
-            }
+            return component => (props, ...args) => component(Object.assign({}, props, selector(state), ...args))
+            
         },
         dispatch(action, ...args) {
             state = reducer(state, action, args);
